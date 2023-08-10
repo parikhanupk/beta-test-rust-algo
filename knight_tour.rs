@@ -48,13 +48,13 @@ fn main() {
         println!("Could not find a tour.");
     }
 
-    dump_board(&mut board);
+    dump_board(&board);
 }
 
 
 
 // Display the board.
-fn dump_board(board: &mut [[i32; NUM_COLS]; NUM_ROWS]) {
+fn dump_board(board: &[[i32; NUM_COLS]; NUM_ROWS]) {
     for r in 0..NUM_ROWS {
         for c in 0..NUM_COLS {
             print!("{:<02} ", board[r][c]);
