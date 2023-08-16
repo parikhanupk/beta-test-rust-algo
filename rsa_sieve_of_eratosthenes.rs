@@ -42,7 +42,7 @@ fn sieve_of_eratosthenes(max: usize) -> Vec<bool> {
 
 
 // Print out the primes in the sieve.
-fn print_sieve(sieve: &mut Vec<bool>) {
+fn print_sieve(sieve: &Vec<bool>) {
     if sieve.len() > 2 {
         print!("2");
         for i in (3..sieve.len()).step_by(2) {
@@ -57,7 +57,7 @@ fn print_sieve(sieve: &mut Vec<bool>) {
 
 
 // Convert the sieve into a vector holding prime numbers.
-fn sieve_to_primes(sieve: Vec<bool>) -> Vec<i64> {
+fn sieve_to_primes(sieve: &Vec<bool>) -> Vec<i64> {
     let mut primes: Vec<i64> = vec![];
     if sieve.len() > 2 {
         primes.push(2);
@@ -73,7 +73,7 @@ fn sieve_to_primes(sieve: Vec<bool>) -> Vec<i64> {
 
 
 // Print the vector of numbers.
-fn print_numbers(primes: &mut Vec<i64>) {
+fn print_numbers(primes: &Vec<i64>) {
     for prime in primes {
         print!("{} ", prime);
     }
@@ -84,13 +84,13 @@ fn print_numbers(primes: &mut Vec<i64>) {
 
 fn main() {
     let max = get_i64("Max: ");
-    let mut sieve = sieve_of_eratosthenes(max as usize);
+    let sieve = sieve_of_eratosthenes(max as usize);
     if max < 1000 {
-        print_sieve(&mut sieve);
+        print_sieve(&sieve);
     }
 
-    let mut primes = sieve_to_primes(sieve);
+    let primes = sieve_to_primes(&sieve);
     if max < 1000 {
-        print_numbers(&mut primes);
+        print_numbers(&primes);
     }
 }
