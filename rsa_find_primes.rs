@@ -121,6 +121,7 @@ fn main() {
         // Calculate minimum and maximum values.
         let min = 10i64.pow((num_digits - 1) as u32);
         let max = 10 * min;
+        if min == 1 { min = 2; } // 1 is not prime.
 
         // Find a prime.
         println!("Prime: {}", find_prime(&mut prng, min as i32, max as i32, NUM_TESTS));
