@@ -119,7 +119,7 @@ fn main() {
         if num_digits < 1 { break; }
 
         // Calculate minimum and maximum values.
-        let min = 10i64.pow((num_digits - 1) as u32);
+        let mut min = 10i64.pow((num_digits - 1) as u32);
         let max = 10 * min;
         if min == 1 { min = 2; } // 1 is not prime.
 
