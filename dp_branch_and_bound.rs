@@ -187,6 +187,47 @@ fn run_algorithm(
 
 
 
+// Recursively assign values in or out of the solution.
+// Return the best assignment, value of that assignment,
+// and the number of function calls we made.
+fn exhaustive_search(items: &mut Vec<Item>, allowed_weight: i32) -> (Vec<Item>, i32, i32) {
+    return do_exhaustive_search(items, allowed_weight, 0);
+}
+
+
+
+fn do_exhaustive_search(
+    items: &mut Vec<Item>,
+    allowed_weight: i32,
+    next_index: i32,
+) -> (Vec<Item>, i32, i32) {
+    if (next_index as usize) >= items.len() {
+        return (copy_items(items), solution_value(items, allowed_weight), 1);
+    } else {
+        items[next_index as usize].is_selected = true;
+        let (included_solution, included_value, included_calls) =
+            do_exhaustive_search(items, allowed_weight, next_index + 1);
+        items[next_index as usize].is_selected = false;
+        let (excluded_solution, excluded_value, excluded_calls) =
+            do_exhaustive_search(items, allowed_weight, next_index + 1);
+        if included_value >= excluded_value {
+            return (
+                included_solution,
+                included_value,
+                included_calls + excluded_calls + 1,
+            );
+        } else {
+            return (
+                excluded_solution,
+                excluded_value,
+                excluded_calls + included_calls + 1,
+            );
+        }
+    }
+}
+
+
+
 fn branch_and_bound(items: &mut Vec<Item>, allowed_weight: i32) -> (Vec<Item>, i32, i32) {
     return do_branch_and_bound(items, allowed_weight, 0, 0, 0, sum_values(items, true), 0);
 }
@@ -255,7 +296,7 @@ fn do_branch_and_bound(
 use std::time::Instant;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-const NUM_ITEMS: i32 = 40; // A reasonable value for branch and bound search.
+const NUM_ITEMS: i32 = 20; // A reasonable value for branch and bound search.
 
 const MIN_VALUE: i32 = 1;
 const MAX_VALUE: i32 = 10;
@@ -287,6 +328,15 @@ fn main() {
     println!("Allowed weight: {}", allowed_weight);
     print_items(&items, true);
     println!();
+
+    // Exhaustive search
+    if NUM_ITEMS > 23 {
+        // Only run exhaustive search if num_items is small enough.
+        println!("Too many items for exhaustive search\n");
+    } else {
+        println!("*** Exhaustive Search ***");
+        run_algorithm(&exhaustive_search, &mut items, allowed_weight);
+    }
 
     if NUM_ITEMS > 40 {
         // Only run branch and bound search if num_items is small enough.
